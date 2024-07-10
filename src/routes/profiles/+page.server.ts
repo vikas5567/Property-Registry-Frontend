@@ -89,7 +89,7 @@ export const actions = {
 
     const deleteUser = await client.sql`
     DELETE FROM names
-    WHERE id = ${'id'};`
+    WHERE id = ${id};`
 	
 		return { success: true };
 	},
@@ -104,7 +104,7 @@ export const actions = {
 
     const createUser = await client.sql`
       INSERT INTO names (name, email)
-      VALUES (${'name'}, ${'email'})
+      VALUES (${name}, ${email})
       ON CONFLICT (email) DO NOTHING;
     `
     return { success: true };
@@ -121,8 +121,8 @@ export const actions = {
 
     const updateUser = await client.sql`
       UPDATE names
-      SET name = ${'name'}, email = ${'email'}
-      WHERE id = ${'id'};
+      SET name = ${name}, email = ${email}
+      WHERE id = ${id};
     `
 
     return { success: true };
