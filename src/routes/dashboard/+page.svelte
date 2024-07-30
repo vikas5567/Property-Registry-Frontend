@@ -3,7 +3,6 @@
 </script>
 
 <style>
-
   /* Header Styles */
   header {
     background-color: white;
@@ -23,7 +22,6 @@
     font-size: 24px;
   }
 
-  
   /* Main Layout Styles */
   .layout {
     display: flex;
@@ -33,7 +31,7 @@
 
   /* Sidebar Styles */
   .sidebar {
-    width: 200px;
+    width: 250px;
     background-color: #f4f4f4;
     padding: 20px;
     border-right: 1px solid #ddd;
@@ -44,75 +42,51 @@
 
   .sidebar:hover {
     width: 300px; 
-  }  
+  }
 
   .sidebar a {
     display: block;
-    padding: 10px;
+    padding: 15px;
     color: #333;
     text-decoration: none;
     margin-bottom: 10px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    position: relative;
-  }
-
-  .extra-options {
-    display: none;
-  }
-
-  /* .map {
-    display: none;
-  } */
-
-  .sidebar a:hover .extra-options{
-    display: block;
-  }
-
-  /* .sidebar a:hover .map{
-    display: block;
-  } */
-
-  .sidebar .extra-options {
-    display: none;
-    margin-top: 10px;
-    transition: opacity 0.3s ease;
-  }
-
-  .sidebar .map {
-    /* display: none; */
-    margin-top: 10px;
-    transition: opacity 0.3s ease;
-  }
-
-  /* .sidebar:hover .extra-options {
-    display: block;
-    opacity: 1;
-  } */
-
-  .extra-options a {
-    padding: 10px;
-    color: #555;
-    text-decoration: none;
-    display: block;
     border-radius: 4px;
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
+  .sidebar a:hover {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .extra-options,
+  .map {
+    display: none;
+    margin-top: 10px;
+    padding-left: 20px;
+    transition: opacity 0.3s ease;
+  }
+
+  .sidebar a:hover .extra-options,
+  .sidebar a:hover .map {
+    display: block;
+  }
+
+  .extra-options a,
   .map a {
     padding: 10px;
     color: #555;
     text-decoration: none;
     display: block;
     border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
-  .extra-options a:hover {
-    background-color: #eee;
-  }
-
+  .extra-options a:hover,
   .map a:hover {
     background-color: #eee;
+    color: #333;
   }
 
   /* Main Content Styles */
@@ -145,19 +119,21 @@
 
 <div class="layout">
   <aside class="sidebar">
-    <a href="/#">Property Issuance
-    <div class="extra-options">
-      <a href="/dashboard/propertyIssuance/issue">Issue New Property</a>
-      <a href="/dashboard/propertyIssuance/update">Update Existing Property</a>
-    </div>
+    <a href="/#">
+      <b>Property Issuance</b>
+      <div class="extra-options">
+        <a href="/dashboard/propertyIssuance/issue">Issue New Property</a>
+        <a href="/dashboard/propertyIssuance/update">Update Existing Property</a>
+      </div>
     </a>
-    <a href="/dashboard/publicmap">Public Map</a>
-    <div class="map">
-      <a href="/dashboard/publicmap/explore">Explore Properties</a>
-      <a href="/dashboard/publicmap/view">View Property Details</a>
-      <a href="/dashboard/publicmap/bid">Bid for Property</a>
-    </div>
-    
+    <a href="/dashboard/publicmap">
+      Public Map
+      <div class="map">
+        <a href="/dashboard/publicmap/explore">Explore Properties</a>
+        <a href="/dashboard/publicmap/view">View Property Details</a>
+        <a href="/dashboard/publicmap/bid">Bid for Property</a>
+      </div>
+    </a>
   </aside>
 
   <main class="main-content">
