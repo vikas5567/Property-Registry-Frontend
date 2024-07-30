@@ -5,8 +5,7 @@ import { createClient } from '@supabase/supabase-js';
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 type PropertyDetails = {
     latitude: string;
@@ -28,26 +27,22 @@ export const GET: RequestHandler = async ({ params }) => {
             .single();
 
         if (error || !data) {
-            return {
-                status: 404,
-                body: {
-                    message: 'Property not found'
-                }
-            };
+            return new Response(
+                JSON.stringify({ message: 'Property not found' }),
+                { status: 404, headers: { 'Content-Type': 'application/json' } }
+            );
         }
 
-        return {
-            status: 200,
-            body: data
-        };
+        return new Response(
+            JSON.stringify(data),
+            { status: 200, headers: { 'Content-Type': 'application/json' } }
+        );
     } catch (error) {
         console.error(error);
-        return {
-            status: 500,
-            body: {
-                message: 'Failed to fetch property details'
-            }
-        };
+        return new Response(
+            JSON.stringify({ message: 'Failed to fetch property details' }),
+            { status: 500, headers: { 'Content-Type': 'application/json' } }
+        );
     }
 };
 
@@ -62,27 +57,21 @@ export const PUT: RequestHandler = async ({ request, params }) => {
             .eq('id', propertyId);
 
         if (error || !data) {
-            return {
-                status: 404,
-                body: {
-                    message: 'Property not found or failed to update'
-                }
-            };
+            return new Response(
+                JSON.stringify({ message: 'Property not found or failed to update' }),
+                { status: 404, headers: { 'Content-Type': 'application/json' } }
+            );
         }
 
-        return {
-            status: 200,
-            body: {
-                message: 'Property updated successfully'
-            }
-        };
+        return new Response(
+            JSON.stringify({ message: 'Property updated successfully' }),
+            { status: 200, headers: { 'Content-Type': 'application/json' } }
+        );
     } catch (error) {
         console.error(error);
-        return {
-            status: 500,
-            body: {
-                message: 'Failed to update property'
-            }
-        };
+        return new Response(
+            JSON.stringify({ message: 'Failed to update property' }),
+            { status: 500, headers: { 'Content-Type': 'application/json' } }
+        );
     }
 };

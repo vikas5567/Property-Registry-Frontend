@@ -1,100 +1,114 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
-    import { page } from '$app/stores';
-    import { goto } from '$app/navigation';
-    import { invalidate } from '$app/navigation';
+  import { onMount } from 'svelte';
+  import { page } from '$app/stores';
+  import { goto } from '$app/navigation';
 
-    let propertyId = '';
-    let property = null;
-    let message = '';
+  interface Property {
+      propertyId: string;
+      location: string;
+      ownerDetails: string;
+      documents: string;
+  }
 
-    $: $page.url.searchParams, async () => {
-        propertyId = $page.url.pathname.split('/').pop();
-        await fetchPropertyDetails();
-    };
+  let propertyId: string = '';
+  let property: Property | null = null;
+  let message: string = '';
 
-    async function fetchPropertyDetails() {
-        try {
-            const response = await fetch(`/api/properties/${propertyId}`);
+  // Watch for changes in the URL and fetch property details
+  $: {
+      if ($page.url.pathname) {
+          propertyId = $page.url.pathname.split('/').pop() || '';
+          fetchPropertyDetails();
+      }
+  }
 
-            if (!response.ok) {
-                throw new Error('Failed to fetch property details');
-            }
+  async function fetchPropertyDetails() {
+      if (!propertyId) {
+          message = 'Invalid Property ID';
+          return;
+      }
 
-            property = await response.json();
-        } catch (error) {
-            console.error(error);
-            message = 'Failed to fetch property details.';
-        }
-    }
+      try {
+          const response = await fetch(`/api/properties/${propertyId}`);
 
-    function handleBid() {
-        goto(`/bid?propertyId=${propertyId}`);
-    }
+          if (!response.ok) {
+              throw new Error('Failed to fetch property details');
+          }
+
+          property = await response.json();
+      } catch (error) {
+          console.error(error);
+          message = 'Failed to fetch property details.';
+      }
+  }
+
+  function handleBid() {
+      goto(`/bid?propertyId=${propertyId}`);
+  }
 </script>
 
 <style>
-  header {
-    background-color: #007bff;
-    color: white;
-    padding: 15px;
-    text-align: center;
-    font-weight: bold;
-  }
+header {
+  background-color: #007bff;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  font-weight: bold;
+}
 
-  .container {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
+.container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
-  .details {
-    margin-bottom: 20px;
-  }
+.details {
+  margin-bottom: 20px;
+}
 
-  .details p {
-    margin: 10px 0;
-  }
+.details p {
+  margin: 10px 0;
+}
 
-  button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
 
-  button:hover {
-    background-color: #0056b3;
-  }
+button:hover {
+  background-color: #0056b3;
+}
 
-  .message {
-    color: red;
-    text-align: center;
-    margin-top: 20px;
-  }
+.message {
+  color: red;
+  text-align: center;
+  margin-top: 20px;
+}
 </style>
 
 <header>
-    <h1>Property Details</h1>
+  <h1>Property Details</h1>
 </header>
 
 <div class="container">
-    {#if message}
-        <p class="message">{message}</p>
-    {/if}
+  {#if message}
+      <p class="message">{message}</p>
+  {/if}
 
-    {#if property}
-        <div class="details">
-            <p><strong>Property ID:</strong> {property.propertyId}</p>
-            <p><strong>Location:</strong> {property.location}</p>
-            <p><strong>Owner:</strong> {property.ownerDetails}</p>
-            <p><strong>Documents:</strong> {property.documents}</p>
-        </div>
-        <button on:click={handleBid}>Place a Bid</button>
-    {/if}
+  {#if property}
+      <div class="details">
+          <p><strong>Property ID:</strong> {property.propertyId}</p>
+          <p><strong>Location:</strong> {property.location}</p>
+          <p><strong>Owner:</strong> {property.ownerDetails}</p>
+          <p><strong>Documents:</strong> {property.documents}</p>
+      </div>
+      <button on:click={handleBid}>Place a Bid</button>
+  {/if}
 </div>

@@ -4,6 +4,7 @@ import { NeucronSigner } from "neucron-signer";
 import axios from 'axios';
 import type { RequestEvent } from '@sveltejs/kit';
 
+
 const provider = new DefaultProvider({ network: bsv.Networks.mainnet });
 // console.log("outside:",provider);
 const signer = new NeucronSigner(provider);
@@ -44,7 +45,7 @@ const uploadToIPFS = async (documentFile: File) => {
         },
     });
 
-    return response.data.IpfsHash;
+    // return response.data.IpfsHash;
 };
 
 const connectSigner = async () => {

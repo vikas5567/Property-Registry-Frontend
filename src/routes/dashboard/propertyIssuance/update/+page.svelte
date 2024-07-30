@@ -43,6 +43,16 @@
             message = 'Failed to update property.';
         }
     }
+
+    function handleInput(event: Event) {
+        const target = event.target as HTMLInputElement | null;
+        if (target) {
+            const { id, value } = target;
+            if (id in propertyDetails) {
+                propertyDetails[id as keyof typeof propertyDetails] = value;
+            }
+        }
+    }
 </script>
 
 <header>
@@ -64,27 +74,27 @@
         <form on:submit|preventDefault={handleUpdate}>
             <div class="form-group">
                 <label for="latitude">Latitude:</label>
-                <input type="text" id="latitude" bind:value={propertyDetails.latitude} on:input={(e) => propertyDetails.latitude = e.target.value} />
+                <input type="text" id="latitude" value={propertyDetails.latitude} on:input={handleInput} />
             </div>
             <div class="form-group">
                 <label for="longitude">Longitude:</label>
-                <input type="text" id="longitude" bind:value={propertyDetails.longitude} on:input={(e) => propertyDetails.longitude = e.target.value} />
+                <input type="text" id="longitude" value={propertyDetails.longitude} on:input={handleInput} />
             </div>
             <div class="form-group">
                 <label for="areaCity">Area/City:</label>
-                <input type="text" id="areaCity" bind:value={propertyDetails.areaCity} on:input={(e) => propertyDetails.areaCity = e.target.value} />
+                <input type="text" id="areaCity" value={propertyDetails.areaCity} on:input={handleInput} />
             </div>
             <div class="form-group">
                 <label for="state">State:</label>
-                <input type="text" id="state" bind:value={propertyDetails.state} on:input={(e) => propertyDetails.state = e.target.value} />
+                <input type="text" id="state" value={propertyDetails.state} on:input={handleInput} />
             </div>
             <div class="form-group">
                 <label for="ownerPublicAddress">Owner Public Address:</label>
-                <input type="text" id="ownerPublicAddress" bind:value={propertyDetails.ownerPublicAddress} on:input={(e) => propertyDetails.ownerPublicAddress = e.target.value} />
+                <input type="text" id="ownerPublicAddress" value={propertyDetails.ownerPublicAddress} on:input={handleInput} />
             </div>
             <div class="form-group">
                 <label for="defaultBidAmount">Default Bid Amount:</label>
-                <input type="number" id="defaultBidAmount" bind:value={propertyDetails.defaultBidAmount} on:input={(e) => propertyDetails.defaultBidAmount = e.target.value} />
+                <input type="number" id="defaultBidAmount" value={propertyDetails.defaultBidAmount} on:input={handleInput} />
             </div>
             <div class="button-container">
                 <button type="submit">Update Property</button>
@@ -113,17 +123,16 @@
         align-items: center;
     }
 
-
     .container {
-     max-width: 600px;
-     margin: 40px auto;
-     padding: 20px;
-     background-color: #f9f9f9;
-     border: 1px solid #ddd;
-     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-     text-align: left;
-     color: black;
-     margin-top: 150px;
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: left;
+        color: black;
+        margin-top: 150px;
     }
 
     .form-group {

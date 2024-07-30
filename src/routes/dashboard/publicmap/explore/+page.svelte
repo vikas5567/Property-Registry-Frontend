@@ -1,14 +1,15 @@
-<script>
+<script lang="ts">
   import { onMount } from 'svelte';
-  let map;
-  
+  import L from 'leaflet';
+  import 'leaflet/dist/leaflet.css'; // Import Leaflet styles
+
+  let map: L.Map;
+
   onMount(() => {
     initializeMap();
   });
 
   function initializeMap() {
-    // Initialize the map using a library like Leaflet or Google Maps
-    const L = window.L; // For Leaflet
     map = L.map('map').setView([51.505, -0.09], 13); // Default center and zoom
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -45,7 +46,7 @@
   }
 
   #map {
-    height: 80vh; /* Adjust as needed */
+    height: 100vh; /* Adjust as needed */
     width: 100%;
   }
 </style>

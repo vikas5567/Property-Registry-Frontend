@@ -4,8 +4,15 @@
     import 'leaflet/dist/leaflet.css';
 
     let map: L.Map;
-    let properties = [];
-    let selectedProperty: any = null;
+    let properties: Property[] = [];
+    let selectedProperty: Property | null = null;
+
+    interface Property {
+        latitude: number;
+        longitude: number;
+        name: string;
+        address: string;
+    }
 
     onMount(async () => {
         // Initialize the map
@@ -21,7 +28,7 @@
         properties = await response.json();
 
         // Add markers for each property
-        properties.forEach(property => {
+        properties.forEach((property: Property) => {
             L.marker([property.latitude, property.longitude])
                 .addTo(map)
                 .bindPopup(`<b>${property.name}</b><br>${property.address}`)

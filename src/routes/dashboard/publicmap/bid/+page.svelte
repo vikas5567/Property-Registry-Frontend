@@ -1,51 +1,52 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
-    import { invalidate } from '$app/navigation';
+  import { onMount } from 'svelte';
+  import { invalidate } from '$app/navigation';
 
-    let propertyId = '';
-    let bidAmount = '';
-    let message = '';
+  let propertyId = '';
+  let bidAmount = '';
+  let message = '';
 
-    onMount(() => {
-      // Extract propertyId from the URL query or other source
-      const urlParams = new URLSearchParams(window.location.search);
-      propertyId = urlParams.get('propertyId') || '';
-    });
+  onMount(() => {
+    // Extract propertyId from the URL query or other source
+    const urlParams = new URLSearchParams(window.location.search);
+    propertyId = urlParams.get('propertyId') || '';
+  });
 
-    async function handleBid() {
-      if (!bidAmount || isNaN(Number(bidAmount)) || Number(bidAmount) <= 0) {
-        message = 'Please enter a valid bid amount.';
-        return;
-      }
-
-      try {
-        const response = await fetch(`/api/bid/${propertyId}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ bidAmount }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to place bid');
-        }
-
-        const result = await response.json();
-        message = `Bid placed successfully: ${result.message}`;
-        invalidate(); // Revalidate the page data
-      } catch (error) {
-        console.error(error);
-        message = 'Failed to place bid.';
-      }
+  async function handleBid() {
+    if (!bidAmount || isNaN(Number(bidAmount)) || Number(bidAmount) <= 0) {
+      message = 'Please enter a valid bid amount.';
+      return;
     }
+
+    try {
+      const response = await fetch(`/api/bid/${propertyId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ bidAmount }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to place bid');
+      }
+
+      const result = await response.json();
+      message = `Bid placed successfully: ${result.message}`;
+      // Trigger revalidation of the data related to this page
+      invalidate(`/property/${propertyId}`); // Adjust the URL to match your route
+    } catch (error) {
+      console.error(error);
+      message = 'Failed to place bid.';
+    }
+  }
 </script>
 
 <style>
   header {
     background-color: #007bff;
     color: white;
-    padding: 15px;
+    padding: 20px;
     text-align: center;
     position: fixed;
     width: 100%;
@@ -53,7 +54,7 @@
     left: 0;
     z-index: 1000;
     font-weight: bold;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 
   .container {
@@ -61,8 +62,8 @@
     margin: 100px auto; /* Adjusted to account for fixed header */
     padding: 20px;
     background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
@@ -87,7 +88,7 @@
     padding: 12px;
     font-size: 16px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 8px;
     background-color: #f9f9f9;
     color: #333;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -96,6 +97,7 @@
   input:focus {
     border-color: #007bff;
     box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+    outline: none;
   }
 
   .button-container {
@@ -108,7 +110,7 @@
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
   }
@@ -120,8 +122,9 @@
 
   .message {
     margin-top: 20px;
-    color: red;
+    color: #dc3545;
     text-align: center;
+    font-weight: bold;
   }
 </style>
 
